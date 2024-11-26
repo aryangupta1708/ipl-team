@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Team Information Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            display: none;
+            padding: 20px;
+            transition: background-color 0.5s;
+        }
+        .welcome {
+            display: block;
+            background-image: url('https://www.traditionalgames.in/wp-content/uploads/2023/04/ipl-teams-wallpapers-768x432.jpg'); /* Set your captains' background image here */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        .visible {
+            display: block;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Step 1: Welcome Page -->
+    <div id="welcome" class="container welcome">
+        <h1>Welcome to the IPL Team Information Portal</h1>
+        <p>Discover all the details about your favorite IPL teams, players, match schedules, statistics, latest news, and fan engagement!</p>
+        <button onclick="nextStep('team-selection')">Start</button>
+    </div>
+
+    <!-- Step 2: Team Selection -->
+    <div id="team-selection" class="container">
+        <h1>Select Your Favorite IPL Team</h1>
+        <select id="team" onchange="teamSelected()">
+            <option value="">-- Select Team --</option>
+            <option value="MI">Mumbai Indians (MI)</option>
+            <option value="CSK">Chennai Super Kings (CSK)</option>
+            <option value="KKR">Kolkata Knight Riders (KKR)</option>
+            <option value="SRH">Sunrisers Hyderabad (SRH)</option>
+            <option value="RR">Rajasthan Royals (RR)</option>
+            <option value="DC">Deccan Chargers (DC)</option>
+            <option value="GT">Gujrat Titans (GT)</option>
+        </select>
+        <button onclick="nextStep('overview')" disabled id="team-next">Next</button>
+    </div>
+
+    <!-- Step 3: Team Overview -->
+    <div id="overview" class="container">
+        <h1 id="team-name"></h1>
+        <p id="team-overview"></p>
+        <button onclick="nextStep('players')">Next</button>
+    </div>
+
+    <!-- Step 4: Players -->
+    <div id="players" class="container">
+        <h1>Players of <span id="players-team-name"></span></h1>
+        <ul id="team-players"></ul>
+        <button onclick="nextStep('schedule')">Show Match Schedule (Last 5 Years)</button>
+    </div>
+
+    <!-- Step 5: Match Schedule -->
+    <div id="schedule" class="container">
+        <h1>Match Schedule (Last 5 Years) for <span id="schedule-team-name"></span></h1>
+        <ul id="team-schedule"></ul>
+        <button onclick="nextStep('statistics')">Next</button>
+    </div>
+
+    <!-- Step 6: Statistics -->
+    <div id="statistics" class="container">
+        <h1>Team Statistics for <span id="statistics-team-name"></span></h1>
+        <ul id="team-statistics"></ul>
+        <button onclick="nextStep('news')">Next</button>
+    </div>
+
+    <!-- Step 7: Latest News -->
+    <div id="news" class="container">
+        <h1>Latest News for <span id="news-team-name"></span></h1>
+        <ul id="team-news"></ul>
+        <button onclick="nextStep('fan-engagement')">Next</button>
+    </div>
+
+    <!-- Step 8: Fan Engagement -->
+    <div id="fan-engagement" class="container">
+        <h1>Fan Engagement for <span id="fan-team-name"></span></h1>
+        <p>Engage with your favorite team! Participate in polls, follow on social media, and more!</p>
+        <button onclick="nextStep('thankyou')">Next</button>
+    </div>
+
+    <!-- Step 9: Thank You -->
+    <div id="thankyou" class="container">
+        <h1>Thank You!</h1>
+        <p>Thank you for supporting your favorite IPL team!</p>
+        <p>We appreciate your passion for the IPL and look forward to the next exciting season!</p>
+    </div>
+
+    <script>
+        let teamInfo = {
+            "MI": {
+                name: "Mumbai Indians (MI)",
+                overview: "Mumbai Indians have won the IPL 5 times in 2013, 2015, 2017, 2019, and 2020. Known for their balanced team and consistent performance.",
+                players: [
+                    { name: "Rohit Sharma", role: "Captain, Batsman", age: 34, stats: "5000+ runs" },
+                    { name: "Jasprit Bumrah", role: "Bowler", age: 27, stats: "100+ wickets" },
+                    { name: "Kieron Pollard", role: "All-rounder", age: 33, stats: "2000+ runs, 50+ wickets" }
+                ],
+                schedule: [
+                    { match: "MI vs CSK", date: "2023-03-25", time: "19:30" },
+                    { match: "MI vs KKR", date: "2023-04-07", time: "19:30" },
+                    { match: "MI vs DC", date: "2022-05-12", time: "20:00" },
+                    { match: "MI vs RCB", date: "2021-04-09", time: "19:30" },
+                    { match: "MI vs SRH", date: "2020-09-29", time: "19:30" }
+                ],
+                statistics: [
+                    "5000+ runs scored by Rohit Sharma",
+                    "Bumrah's economy rate: 6.90",
+                    "Kieron Pollard: 2000+ runs and 50+ wickets"
+                ],
+                news: [
+                    "MI dominates the 2020 season!",
+                    "MI signs new players for 2023."
+                ]
+            },
+            "CSK": {
+                name: "Chennai Super Kings (CSK)",
+                overview: "Chennai Super Kings have won the IPL 5 times in 2010, 2011, 2018, 2021, and 2023. Led by legendary captain MS Dhoni.",
+                players: [
+                    { name: "MS Dhoni", role: "Captain, Wicketkeeper-Batsman", age: 41, stats: "4500+ runs" },
+                    { name: "Ravindra Jadeja", role: "All-rounder", age: 35, stats: "2000+ runs, 100+ wickets" },
+                    { name: "Faf du Plessis", role: "Batsman", age: 39, stats: "3000+ runs" }
+                ],
+                schedule: [
+                    { match: "CSK vs MI", date: "2023-03-25", time: "19:30" },
+                    { match: "CSK vs KKR", date: "2023-04-07", time: "19:30" },
+                    { match: "CSK vs RR", date: "2022-05-12", time: "20:00" },
+                    { match: "CSK vs DC", date: "2021-04-09", time: "19:30" },
+                    { match: "CSK vs SRH", date: "2020-09-29", time: "19:30" }
+                ],
+                statistics: [
+                    "4500+ runs scored by MS Dhoni",
+                    "Jadeja's economy rate: 7.30",
+                    "Faf du Plessis: 3000+ runs"
+                ],
+                news: [
+                    "CSK triumphs in 2023!",
+                    "MS Dhoni leads CSK to another victory."
+                ]
+            },
+            "KKR": {
+                name: "Kolkata Knight Riders (KKR)",
+                overview: "Kolkata Knight Riders have won the IPL 3 times in 2012, 2014, and 2024. Known for their aggressive batting lineup.",
+                players: [
+                    { name: "Shreyas Iyer", role: "Captain, Batsman", age: 28, stats: "2000+ runs" },
+                    { name: "Andre Russell", role: "All-rounder", age: 35, stats: "3000+ runs, 150+ wickets" },
+                    { name: "Sunil Narine", role: "Bowler", age: 34, stats: "100+ wickets" }
+                ],
+                schedule: [
+                    { match: "KKR vs MI", date: "2023-04-01", time: "19:30" },
+                    { match: "KKR vs CSK", date: "2023-04-10", time: "19:30" },
+                    { match: "KKR vs RR", date: "2022-05-15", time: "20:00" },
+                    { match: "KKR vs DC", date: "2021-04-11", time: "19:30" },
+                    { match: "KKR vs SRH", date: "2020-09-28", time: "19:30" }
+                ],
+                statistics: [
+                    "2000+ runs scored by Shreyas Iyer",
+                    "Russell's economy rate: 9.50",
+                    "Narine: 100+ wickets"
+                ],
+                news: [
+                    "KKR shines in 2024!",
+                    "Shreyas Iyer appointed captain."
+                ]
+            },
+            "SRH": {
+                name: "Sunrisers Hyderabad (SRH)",
+                overview: "Sunrisers Hyderabad won the IPL in 2016. Known for their strong bowling attack.",
+                players: [
+                    { name: "David Warner", role: "Captain, Batsman", age: 37, stats: "6000+ runs" },
+                    { name: "Bhuvneshwar Kumar", role: "Bowler", age: 33, stats: "150+ wickets" },
+                    { name: "Kane Williamson", role: "Batsman", age: 33, stats: "4000+ runs" }
+                ],
+                schedule: [
+                    { match: "SRH vs MI", date: "2023-04-02", time: "19:30" },
+                    { match: "SRH vs KKR", date: "2023-04-09", time: "19:30" },
+                    { match: "SRH vs CSK", date: "2022-05-16", time: "20:00" },
+                    { match: "SRH vs RR", date: "2021-04-14", time: "19:30" },
+                    { match: "SRH vs DC", date: "2020-09-30", time: "19:30" }
+                ],
+                statistics: [
+                    "6000+ runs scored by David Warner",
+                    "Bhuvneshwar's economy rate: 7.40",
+                    "Kane Williamson: 4000+ runs"
+                ],
+                news: [
+                    "SRH aiming for the title in 2023!",
+                    "Warner leads SRH with great form."
+                ]
+            },
+            "RR": {
+                name: "Rajasthan Royals (RR)",
+                overview: "Rajasthan Royals won the IPL in 2008. Known for their young talents and dynamic gameplay.",
+                players: [
+                    { name: "Sanju Samson", role: "Captain, Wicketkeeper-Batsman", age: 28, stats: "2000+ runs" },
+                    { name: "Jos Buttler", role: "Batsman", age: 33, stats: "3000+ runs" },
+                    { name: "Ben Stokes", role: "All-rounder", age: 32, stats: "2000+ runs, 100+ wickets" }
+                ],
+                schedule: [
+                    { match: "RR vs MI", date: "2023-04-05", time: "19:30" },
+                    { match: "RR vs KKR", date: "2023-04-12", time: "19:30" },
+                    { match: "RR vs CSK", date: "2022-05-14", time: "20:00" },
+                    { match: "RR vs DC", date: "2021-04-15", time: "19:30" },
+                    { match: "RR vs SRH", date: "2020-09-26", time: "19:30" }
+                ],
+                statistics: [
+                    "2000+ runs scored by Sanju Samson",
+                    "Jos Buttler's average: 40.00",
+                    "Ben Stokes: 2000+ runs and 100+ wickets"
+                ],
+                news: [
+                    "RR's young stars shine in 2023.",
+                    "Rajasthan Royals aiming for the title."
+                ]
+            },
+            "DC": {
+                name: "Deccan Chargers (DC)",
+                overview: "Deccan Chargers won the IPL in 2009. Known for their explosive batting and enthusiastic fan base.",
+                players: [
+                    { name: "A.B. de Villiers", role: "Batsman", age: 39, stats: "5000+ runs" },
+                    { name: "Adam Gilchrist", role: "Wicketkeeper-Batsman", age: 50, stats: "3000+ runs" },
+                    { name: "Shaun Marsh", role: "Batsman", age: 40, stats: "2000+ runs" }
+                ],
+                schedule: [
+                    { match: "DC vs MI", date: "2023-04-08", time: "19:30" },
+                    { match: "DC vs CSK", date: "2023-04-15", time: "19:30" },
+                    { match: "DC vs KKR", date: "2022-05-13", time: "20:00" },
+                    { match: "DC vs RR", date: "2021-04-18", time: "19:30" },
+                    { match: "DC vs SRH", date: "2020-09-27", time: "19:30" }
+                ],
+                statistics: [
+                    "5000+ runs scored by A.B. de Villiers",
+                    "Gilchrist's highest score: 150",
+                    "Shaun Marsh: 2000+ runs"
+                ],
+                news: [
+                    "DC aims to reclaim past glory in 2023.",
+                    "Deccan Chargers recruit new talent for the season."
+                ]
+            },
+            "GT": {
+                name: "Gujrat Titans (GT)",
+                overview: "Gujrat Titans won the IPL in 2022. A strong team with a mix of experienced and young players.",
+                players: [
+                    { name: "Hardik Pandya", role: "Captain, All-rounder", age: 29, stats: "3000+ runs, 50+ wickets" },
+                    { name: "Shubman Gill", role: "Batsman", age: 25, stats: "1000+ runs" },
+                    { name: "Mohammed Shami", role: "Bowler", age: 34, stats: "100+ wickets" }
+                ],
+                schedule: [
+                    { match: "GT vs SRH", date: "2023-04-03", time: "19:30" },
+                    { match: "GT vs KKR", date: "2023-04-10", time: "19:30" },
+                    { match: "GT vs DC", date: "2022-05-13", time: "20:00" },
+                    { match: "GT vs RR", date: "2021-04-12", time: "19:30" },
+                    { match: "GT vs MI", date: "2020-09-28", time: "19:30" }
+                ],
+                statistics: [
+                    "3000+ runs scored by Hardik Pandya",
+                    "Shami's economy rate: 7.50",
+                    "Shubman Gill: 1000+ runs"
+                ],
+                news: [
+                    "GT shines in their debut season!",
+                    "Hardik Pandya leads GT to success."
+                ]
+            }
+        };
+
+        function nextStep(step) {
+            document.querySelectorAll('.container').forEach(container => container.classList.remove('visible'));
+            document.getElementById(step).classList.add('visible');
+
+            if (step === 'team-selection') {
+                document.getElementById('team-next').disabled = true;
+            }
+
+            if (step === 'overview') {
+                const selectedTeam = document.getElementById('team').value;
+                if (selectedTeam) {
+                    document.getElementById('team-name').innerText = teamInfo[selectedTeam].name;
+                    document.getElementById('team-overview').innerText = teamInfo[selectedTeam].overview;
+                    changeBackgroundColor(selectedTeam);
+                }
+            }
+
+            if (step === 'players') {
+                const selectedTeam = document.getElementById('team').value;
+                document.getElementById('players-team-name').innerText = teamInfo[selectedTeam].name;
+                document.getElementById('team-players').innerHTML = teamInfo[selectedTeam].players.map(player => 
+                    `<li>${player.name} - ${player.role}, Age: ${player.age}, Stats: ${player.stats}</li>`).join('');
+                document.getElementById('team-next').disabled = false;
+            }
+
+            if (step === 'schedule') {
+                const selectedTeam = document.getElementById('team').value;
+                document.getElementById('schedule-team-name').innerText = teamInfo[selectedTeam].name;
+                document.getElementById('team-schedule').innerHTML = teamInfo[selectedTeam].schedule.map(match => 
+                    `<li>${match.match} - Date: ${match.date}, Time: ${match.time}</li>`).join('');
+            }
+
+            if (step === 'statistics') {
+                const selectedTeam = document.getElementById('team').value;
+                document.getElementById('statistics-team-name').innerText = teamInfo[selectedTeam].name;
+                document.getElementById('team-statistics').innerHTML = teamInfo[selectedTeam].statistics.map(stat => 
+                    `<li>${stat}</li>`).join('');
+            }
+
+            if (step === 'news') {
+                const selectedTeam = document.getElementById('team').value;
+                document.getElementById('news-team-name').innerText = teamInfo[selectedTeam].name;
+                document.getElementById('team-news').innerHTML = teamInfo[selectedTeam].news.map(news => 
+                    `<li>${news}</li>`).join('');
+            }
+
+            if (step === 'fan-engagement') {
+                const selectedTeam = document.getElementById('team').value;
+                document.getElementById('fan-team-name').innerText = teamInfo[selectedTeam].name;
+            }
+        }
+
+        function teamSelected() {
+            document.getElementById('team-next').disabled = !document.getElementById('team').value;
+        }
+
+        function changeBackgroundColor(team) {
+            switch (team) {
+                case "MI":
+                    document.body.style.backgroundColor = "#0051B5"; // Blue for MI
+                    break;
+                case "CSK":
+                    document.body.style.backgroundColor = "#F8E87C"; // Yellow for CSK
+                    break;
+                case "KKR":
+                    document.body.style.backgroundColor = "#5E2B8D"; // Purple for KKR
+                    break;
+                case "SRH":
+                    document.body.style.backgroundColor = "#F6A600"; // Orange for SRH
+                    break;
+                case "RR":
+                    document.body.style.backgroundColor = "#FF007D"; // Pink for RR
+                    break;
+                case "DC":
+                    document.body.style.backgroundColor = "#0085CA"; // Blue for DC
+                    break;
+                case "GT":
+                    document.body.style.backgroundColor = "#4FC3F7"; // Light Blue for GT
+                    break;
+                default:
+                    document.body.style.backgroundColor = "#ffffff"; // Default color
+            }
+        }
+    </script>
+</body>
+</html>
